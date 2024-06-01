@@ -1,14 +1,14 @@
 import React from 'react'
 
-const Post = (props) => {
+const Post = ({ removeHandler, ...props }) => {
     return (
         <div className="post">
             <div className="post__content">
-                <strong>{props.title}</strong>
+                <strong>{props.number}. {props.title}</strong>
                 <div>{props.description}</div>
             </div>
             <div className="post__btns">
-                <button onClick={props.handleClick}>REMOVE</button>
+                <button onClick={() => removeHandler(props.id)}>REMOVE</button>
             </div>
         </div>
     )
