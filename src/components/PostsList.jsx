@@ -23,7 +23,7 @@ const PostsList = ({ title, posts, removeHandler }) => {
                         <Post
                             title={p.title}
                             body={p.body}
-                            number={index + 1}
+                            number={p.id}
                             id={p.id}
                             removeHandler={removeHandler}
                         />

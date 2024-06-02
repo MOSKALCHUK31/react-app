@@ -5,8 +5,10 @@ class PostsServiceClass {
         this.apiBase = 'https://jsonplaceholder.typicode.com'
     }
 
-    getAll() {
-        return axios.get(`${ this.apiBase }/posts`)
+    getAll(page = 1, limit = 10,) {
+        return axios.get(`${ this.apiBase }/posts`, {
+            params: { _limit: limit,  _page: page }
+        })
     }
 }
 
