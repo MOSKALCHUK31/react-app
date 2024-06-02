@@ -5,7 +5,7 @@ const Post = ({ removeHandler, ...props }) => {
         <div className="post">
             <div className="post__content">
                 <strong>{props.number}. {props.title}</strong>
-                <div>{props.description}</div>
+                <div>{props.body}</div>
             </div>
             <div className="post__btns">
                 <button onClick={() => removeHandler(props.id)}>REMOVE</button>

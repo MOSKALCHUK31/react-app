@@ -3,15 +3,15 @@ import MyButton from './UI/button/MyButton'
 import MyInput from './UI/input/MyInput'
 
 const PostForm = ({ createHandler }) => {
-    const [post, setPost] = useState({ title: '', description : '' })
+    const [post, setPost] = useState({ title: '', body : '' })
 
     const handleSubmit = (event) => {
         event.preventDefault()
 
-        if (!post.description || !post.title) return
+        if (!post.body || !post.title) return
 
         createHandler({ ...post, id: Date.now() })
-        setPost({ title: '', description: '' })
+        setPost({ title: '', body: '' })
     }
 
     return (
@@ -24,9 +24,9 @@ const PostForm = ({ createHandler }) => {
             />
             <MyInput
                 type="text"
-                placeholder="post description"
-                value={post.description}
-                onChange={(e) => setPost({...post, description: e.target.value})}
+                placeholder="post body"
+                value={post.body}
+                onChange={(e) => setPost({...post, body: e.target.value})}
             />
             <MyButton type="submit">SUBMIT</MyButton>
         </form>
