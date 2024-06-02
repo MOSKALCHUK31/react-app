@@ -22,3 +22,26 @@
     justify-content: space-between;
     align-items: center;
 }
+
+
+.post-item-enter {
+    transform: translateX(50%);
+    opacity: 0;
+}
+
+.post-item-enter-active {
+    transform: translateX(0);
+    opacity: 1;
+    transition: .3s;
+}
+
+.post-item-exit {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.post-item-exit-active {
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: .3s;
+}
