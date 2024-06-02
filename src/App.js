@@ -8,11 +8,13 @@ import PostForm from './components/PostForm'
 import PostFilter from './components/PostFilter'
 import MyModal from './components/UI/modal/MyModal'
 import MyButton from './components/UI/button/MyButton'
+import MyLoader from './components/UI/loader/MyLoader'
 
 function App() {
     const [posts, setPosts] = useState([])
     const [filter, setFilter] = useState({ sort: '', query: '' })
     const [modal, setModal] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const sortedAndSearchPosts = usePosts(filter.query, filter.sort, posts)
 
     const removePost = (id) => setPosts(posts.filter(p => p.id !== id))
@@ -21,8 +23,10 @@ function App() {
         setModal(false)
     }
     const fetchData = async () =>  {
-        const { data } = await new PostsService().getAll()
+        setIsLoading(true)
+        const { data } = await PostsService.getAll()
         setPosts(data)
+        setIsLoading(false)
     }
 
     useEffect(() => {
@@ -44,11 +48,16 @@ function App() {
                 options={sortSelectOptions}
                 filterHandler={setFilter}
             />
-            <PostsList
-                title={'MY LIST'}
-                posts={sortedAndSearchPosts}
-                removeHandler={removePost}
-            />
+            {isLoading
+                ? <div style={{display: 'flex', justifyContent: 'center', marginTop: '50px'}}>
+                    <MyLoader />
+                </div>
+                : <PostsList
+                    title={'MY LIST'}
+                    posts={sortedAndSearchPosts}
+                    removeHandler={removePost}
+                />
+            }
         </div>
     )
 }

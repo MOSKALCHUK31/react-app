@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export class PostsService {
+class PostsServiceClass {
     constructor() {
         this.apiBase = 'https://jsonplaceholder.typicode.com'
     }
@@ -9,3 +9,5 @@ export class PostsService {
         return axios.get(`${ this.apiBase }/posts`)
     }
 }
+
+export const PostsService = new PostsServiceClass()
