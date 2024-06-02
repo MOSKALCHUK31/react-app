@@ -4,6 +4,8 @@ import { sortSelectOptions } from './utils/sortSelectOptions'
 import PostsList from './components/PostsList'
 import PostForm from './components/PostForm'
 import PostFilter from './components/PostFilter'
+import MyModal from './components/UI/modal/MyModal'
+import MyButton from './components/UI/button/MyButton'
 
 function App() {
     const [posts, setPosts] = useState([
@@ -13,6 +15,7 @@ function App() {
         { id: '3', title: 'PHP', description: '0 Programming language' }
     ])
     const [filter, setFilter] = useState({ sort: '', query: '' })
+    const [visible, setVisible] = useState(false)
 
     const sortedPosts = useMemo(() => {
         if (!filter.sort) return posts
@@ -25,11 +28,20 @@ function App() {
     }, [filter.query, sortedPosts])
 
     const removePost = (id) => setPosts(posts.filter(p => p.id !== id))
-    const createPost = (data) => setPosts([...posts, data])
+    const createPost = (data) => {
+        setPosts([...posts, data])
+        setVisible(false)
+    }
 
     return (
         <div className="App">
-            <PostForm createHandler={createPost} />
+            <MyButton
+                type="button"
+                onClick={() => setVisible(true)}
+            >CREATE POST</MyButton>
+            <MyModal visible={visible} setVisible={() => setVisible(false)}>
+                <PostForm createHandler={createPost}/>
+            </MyModal>
             <hr style={{margin: '15px 0'}}/>
             <PostFilter
                 filter={filter}
