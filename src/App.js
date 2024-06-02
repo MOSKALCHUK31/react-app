@@ -3,6 +3,7 @@ import './styles/App.css'
 import { sortSelectOptions } from './utils/sortSelectOptions'
 import { PostsService } from './api/PostsService'
 import { usePosts } from './hooks/usePosts'
+import { useFetching } from './hooks/useFetching'
 import PostsList from './components/PostsList'
 import PostForm from './components/PostForm'
 import PostFilter from './components/PostFilter'
@@ -14,23 +15,20 @@ function App() {
     const [posts, setPosts] = useState([])
     const [filter, setFilter] = useState({ sort: '', query: '' })
     const [modal, setModal] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
     const sortedAndSearchPosts = usePosts(filter.query, filter.sort, posts)
+    const [fetchPosts, isPostsLoading, postsError] = useFetching( async () => {
+        const { data } = await PostsService.getAll()
+        setPosts(data)
+    })
 
     const removePost = (id) => setPosts(posts.filter(p => p.id !== id))
     const createPost = (data) => {
         setPosts([...posts, data])
         setModal(false)
     }
-    const fetchData = async () =>  {
-        setIsLoading(true)
-        const { data } = await PostsService.getAll()
-        setPosts(data)
-        setIsLoading(false)
-    }
 
     useEffect(() => {
-        fetchData()
+        fetchPosts()
     }, [])
 
     return (
@@ -48,7 +46,8 @@ function App() {
                 options={sortSelectOptions}
                 filterHandler={setFilter}
             />
-            {isLoading
+            {postsError && <h1 style={{textAlign: 'center'}}>{postsError}</h1>}
+            {isPostsLoading
                 ? <div style={{display: 'flex', justifyContent: 'center', marginTop: '50px'}}>
                     <MyLoader />
                 </div>
