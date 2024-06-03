@@ -1,5 +1,5 @@
 import React from 'react'
-import Post from './Post'
+import PostItem from './PostItem'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 
 const PostsList = ({ title, posts, removeHandler }) => {
@@ -20,7 +20,7 @@ const PostsList = ({ title, posts, removeHandler }) => {
                         timeout={500}
                         classNames="post-item"
                     >
-                        <Post
+                        <PostItem
                             title={p.title}
                             body={p.body}
                             number={p.id}
