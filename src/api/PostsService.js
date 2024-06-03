@@ -2,13 +2,23 @@ import axios from 'axios'
 
 class PostsServiceClass {
     constructor() {
-        this.apiBase = 'https://jsonplaceholder.typicode.com'
+        this.instance = axios.create({
+            baseURL: 'https://jsonplaceholder.typicode.com'
+        })
     }
 
     getAll(page = 1, limit = 10,) {
-        return axios.get(`${ this.apiBase }/posts`, {
-            params: { _limit: limit,  _page: page }
+        return this.instance('/posts', {
+            params: { _limit: limit, _page: page }
         })
+    }
+
+    getPostById(postId) {
+        return this.instance(`/posts/${ postId }`)
+    }
+
+    getPostComments(postId) {
+        return this.instance(`/posts/${ postId }/comments`)
     }
 }
 
