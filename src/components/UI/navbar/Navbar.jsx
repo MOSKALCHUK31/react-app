@@ -3,14 +3,18 @@ import styles from './Navbar.module.css'
 import { Link } from 'react-router-dom'
 import MyButton from '../button/MyButton'
 
-const Navbar = ({ isAuth, onClick }) => {
+const Navbar = ({ isAuth, setIsAuth }) => {
+    function onLogout() {
+        localStorage.removeItem('auth')
+        setIsAuth(false)
+    }
 
     return (
         <div className={styles.navbar}>
             { isAuth
                 ?
                 <div>
-                    <MyButton onClick={onClick}>LOGOUT</MyButton>
+                    <MyButton onClick={onLogout}>LOGOUT</MyButton>
                 </div>
                 : ''
             }

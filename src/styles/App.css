@@ -12,6 +12,8 @@
 
 .App {
     width: 800px;
+    padding-top: 24px;
+    padding-bottom: 24px;
 }
 
 .post {

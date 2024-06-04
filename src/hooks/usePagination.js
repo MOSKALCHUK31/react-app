@@ -18,6 +18,7 @@ export const usePagination = (totalCount, limit) => {
     return {
         page,
         setPage,
+        totalPages,
         paginationArr
     }
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import '../styles/App.css'
 
 import { usePagination } from '../hooks/usePagination'
@@ -14,6 +14,7 @@ import PostFilter from '../components/PostFilter'
 import MyLoader from '../components/UI/loader/MyLoader'
 import PostsList from '../components/PostsList'
 import Pagination from '../components/UI/pagination/Pagination'
+import { useObserver } from '../hooks/useObserver'
 
 function Posts() {
     const [posts, setPosts] = useState([])
@@ -21,11 +22,13 @@ function Posts() {
     const [modal, setModal] = useState(false)
     const [totalCount, setTotalCount] = useState(0)
 
-    const { page, paginationArr, setPage } = usePagination(totalCount, 10)
+    const observerTarget = useRef(null)
+
+    const { page, paginationArr, setPage, totalPages } = usePagination(totalCount, 10)
     const sortedAndSearchPosts = usePosts(filter.query, filter.sort, posts)
     const [fetchPosts, isPostsLoading, postsError] = useFetching( async (...args) => {
         const { data, headers } = await PostsService.getAll(...args)
-        setPosts(data)
+        setPosts([...posts, ...data])
         setTotalCount(+headers['x-total-count'])
     })
 
@@ -38,6 +41,10 @@ function Posts() {
     useEffect(() => {
         fetchPosts(page)
     }, [page])
+
+    useObserver(observerTarget, page < totalPages, isPostsLoading, () => {
+        setPage(page + 1)
+    })
 
     return (
         <div className="App">
@@ -54,15 +61,16 @@ function Posts() {
                 options={sortSelectOptions}
                 filterHandler={setFilter}
             />
-            {isPostsLoading
-                ? <div style={{display: 'flex', justifyContent: 'center', marginTop: '50px'}}>
-                    <MyLoader />
+            <PostsList
+                title={'MY LIST'}
+                posts={sortedAndSearchPosts}
+                removeHandler={removePost}
+            />
+            <div ref={observerTarget} style={{height: '30px', background: 'orange'}}/>
+            {isPostsLoading &&
+                <div style={{display: 'flex', justifyContent: 'center', marginTop: '50px'}}>
+                    <MyLoader/>
                 </div>
-                : <PostsList
-                    title={'MY LIST'}
-                    posts={sortedAndSearchPosts}
-                    removeHandler={removePost}
-                />
             }
             {postsError &&
                 <h1 style={{textAlign: 'center'}}>{postsError}</h1>

@@ -9,11 +9,6 @@ function App() {
     const [isAuth, setIsAuth] = useState(false)
     const [isLoaded, setIsLoaded] = useState(false)
 
-    function onLogout() {
-        localStorage.removeItem('auth')
-        setIsAuth(false)
-    }
-
     useEffect(() => {
         const auth = localStorage.getItem('auth')
 
@@ -33,7 +28,7 @@ function App() {
     return (
         <AuthContext.Provider value={{isAuth, setIsAuth}}>
             <BrowserRouter>
-                <Navbar isAuth={isAuth} onClick={onLogout}/>
+                <Navbar isAuth={isAuth} setIsAuth={setIsAuth}/>
                 <AppRouter />
             </BrowserRouter>
         </AuthContext.Provider>
