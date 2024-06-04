@@ -1,13 +1,24 @@
 import React from 'react'
 import styles from './Navbar.module.css'
 import { Link } from 'react-router-dom'
+import MyButton from '../button/MyButton'
 
-const Navbar = () => {
+const Navbar = ({ isAuth, onClick }) => {
+
     return (
         <div className={styles.navbar}>
-             <Link className={styles.navbarItem} to="/posts">POSTS</Link>
-             <Link className={styles.navbarItem} to="/ABOUT">ABOUT</Link>
-         </div>
+            { isAuth
+                ?
+                <div>
+                    <MyButton onClick={onClick}>LOGOUT</MyButton>
+                </div>
+                : ''
+            }
+            <div>
+                <Link className={styles.navbarItem} to="/posts">POSTS</Link>
+                <Link className={styles.navbarItem} to="/about">ABOUT</Link>
+            </div>
+        </div>
     )
 }
 
